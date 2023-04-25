@@ -34,6 +34,29 @@ func TestIntFromPtr(t *testing.T) {
 	assertNullInt(t, null, "IntFromPtr(nil)")
 }
 
+func TestIntPtrFrom(t *testing.T) {
+	i := IntPtrFrom(12345)
+	assertIntNotNil(t, i, "IntPtrFrom()")
+	assertInt(t, *i, "IntPtrFrom()")
+
+	zero := IntPtrFrom(0)
+	if !zero.Valid {
+		t.Error("IntPtrFrom(0)", "is invalid, but should be valid")
+	}
+}
+
+func TestIntPtrFromPtr(t *testing.T) {
+	n := int64(12345)
+	iptr := &n
+	i := IntPtrFromPtr(iptr)
+	assertIntNotNil(t, i, "IntPtrFromPtr()")
+	assertInt(t, *i, "IntPtrFromPtr()")
+
+	null := IntPtrFromPtr(nil)
+	assertIntNotNil(t, i, "IntPtrFromPtr(nil)")
+	assertNullInt(t, *null, "IntPtrFromPtr(nil)")
+}
+
 func TestUnmarshalInt(t *testing.T) {
 	var i Int
 	err := json.Unmarshal(intJSON, &i)
@@ -237,6 +260,12 @@ func TestIntEqual(t *testing.T) {
 	int1 = NewInt(10, true)
 	int2 = NewInt(20, true)
 	assertIntEqualIsFalse(t, int1, int2)
+}
+
+func assertIntNotNil(t *testing.T, i *Int, from string) {
+	if i == nil {
+		t.Errorf("bad %s int: %v ≠ %v\n", from, nil, "non-nil")
+	}
 }
 
 func assertInt(t *testing.T, i Int, from string) {

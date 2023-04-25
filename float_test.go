@@ -34,6 +34,28 @@ func TestFloatFromPtr(t *testing.T) {
 	assertNullFloat(t, null, "FloatFromPtr(nil)")
 }
 
+func TestFloatPtrFrom(t *testing.T) {
+	f := FloatPtrFrom(1.2345)
+	assertFloatNotNil(t, f, "FloatPtrFrom()")
+	assertFloat(t, *f, "FloatFrom()")
+
+	zero := FloatPtrFrom(0)
+	assertFloatNotNil(t, zero, "FloatPtrFrom()")
+	if !zero.Valid {
+		t.Error("FloatFrom(0)", "is invalid, but should be valid")
+	}
+}
+
+func TestFloatPtrFromPtr(t *testing.T) {
+	n := float64(1.2345)
+	iptr := &n
+	f := FloatPtrFromPtr(iptr)
+	assertFloat(t, *f, "FloatFromPtr()")
+
+	null := FloatPtrFromPtr(nil)
+	assertNullFloat(t, *null, "FloatFromPtr(nil)")
+}
+
 func TestUnmarshalFloat(t *testing.T) {
 	var f Float
 	err := json.Unmarshal(floatJSON, &f)
@@ -230,6 +252,12 @@ func TestFloatEqual(t *testing.T) {
 	f1 = NewFloat(10, true)
 	f2 = NewFloat(20, true)
 	assertFloatEqualIsFalse(t, f1, f2)
+}
+
+func assertFloatNotNil(t *testing.T, f *Float, from string) {
+	if f == nil {
+		t.Errorf("bad %s float: %v ≠ %v\n", from, nil, "non-nil")
+	}
 }
 
 func assertFloat(t *testing.T, f Float, from string) {

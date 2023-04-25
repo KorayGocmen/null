@@ -20,6 +20,11 @@ type String struct {
 	sql.NullString
 }
 
+// StringPtr returns the pointer to a String.
+func StringPtr(s String) *String {
+	return &s
+}
+
 // StringFrom creates a new String that will never be blank.
 func StringFrom(s string) String {
 	return NewString(s, true)
@@ -31,6 +36,16 @@ func StringFromPtr(s *string) String {
 		return NewString("", false)
 	}
 	return NewString(*s, true)
+}
+
+// StringPtrFrom creates a new String ptr that will never be blank.
+func StringPtrFrom(s string) *String {
+	return StringPtr(StringFrom(s))
+}
+
+// StringPtrFromPtr creates a new String ptr that be null if s is nil.
+func StringPtrFromPtr(s *string) *String {
+	return StringPtr(StringFromPtr(s))
 }
 
 // ValueOrZero returns the inner value if valid, otherwise zero.

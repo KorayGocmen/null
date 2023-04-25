@@ -33,6 +33,11 @@ func NewTime(t time.Time, valid bool) Time {
 	}
 }
 
+// TimePtr returns the pointer to a Time.
+func TimePtr(t Time) *Time {
+	return &t
+}
+
 // TimeFrom creates a new Time that will always be valid.
 func TimeFrom(t time.Time) Time {
 	return NewTime(t, true)
@@ -44,6 +49,16 @@ func TimeFromPtr(t *time.Time) Time {
 		return NewTime(time.Time{}, false)
 	}
 	return NewTime(*t, true)
+}
+
+// TimePtrFrom creates a new Time that will always be valid.
+func TimePtrFrom(t time.Time) *Time {
+	return TimePtr(TimeFrom(t))
+}
+
+// TimePtrFromPtr creates a new Time that will be null if t is nil.
+func TimePtrFromPtr(t *time.Time) *Time {
+	return TimePtr(TimeFromPtr(t))
 }
 
 // ValueOrZero returns the inner value if valid, otherwise zero.

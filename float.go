@@ -28,6 +28,11 @@ func NewFloat(f float64, valid bool) Float {
 	}
 }
 
+// FloatPtr returns the pointer to a Float.
+func FloatPtr(f Float) *Float {
+	return &f
+}
+
 // FloatFrom creates a new Float that will always be valid.
 func FloatFrom(f float64) Float {
 	return NewFloat(f, true)
@@ -39,6 +44,16 @@ func FloatFromPtr(f *float64) Float {
 		return NewFloat(0, false)
 	}
 	return NewFloat(*f, true)
+}
+
+// FloatPtrFrom creates a new Float ptr that will always be valid.
+func FloatPtrFrom(f float64) *Float {
+	return FloatPtr(FloatFrom(f))
+}
+
+// FloatPtrFromPtr creates a new Float ptr that be null if f is nil.
+func FloatPtrFromPtr(f *float64) *Float {
+	return FloatPtr(FloatFromPtr(f))
 }
 
 // ValueOrZero returns the inner value if valid, otherwise zero.

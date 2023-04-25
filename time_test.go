@@ -119,6 +119,22 @@ func TestTimeFromPtr(t *testing.T) {
 	assertNullTime(t, null, "TimeFromPtr(nil)")
 }
 
+func TestTimePtrFrom(t *testing.T) {
+	ti := TimePtrFrom(timeValue1)
+	assertTimeNotNil(t, ti, "TimePtrFrom() time.Time")
+	assertTime(t, *ti, "TimeFrom() time.Time")
+}
+
+func TestTimePtrFromPtr(t *testing.T) {
+	ti := TimePtrFromPtr(&timeValue1)
+	assertTimeNotNil(t, ti, "TimePtrFrom() time.Time")
+	assertTime(t, *ti, "TimeFromPtr() time")
+
+	null := TimePtrFromPtr(nil)
+	assertTimeNotNil(t, null, "TimePtrFrom() time.Time")
+	assertNullTime(t, *null, "TimeFromPtr(nil)")
+}
+
 func TestTimeSetValid(t *testing.T) {
 	var ti time.Time
 	change := NewTime(ti, false)
@@ -254,6 +270,12 @@ func TestTimeExactEqual(t *testing.T) {
 	t1 = NewTime(timeValue1, true)
 	t2 = NewTime(timeValue3, true)
 	assertTimeExactEqualIsFalse(t, t1, t2)
+}
+
+func assertTimeNotNil(t *testing.T, ti *Time, from string) {
+	if ti == nil {
+		t.Errorf("bad %s time: %v ≠ %v\n", from, nil, "non-nil")
+	}
 }
 
 func assertTime(t *testing.T, ti Time, from string) {

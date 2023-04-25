@@ -39,6 +39,30 @@ func TestStringFromPtr(t *testing.T) {
 	assertNullStr(t, null, "StringFromPtr(nil)")
 }
 
+func TestStringPtrFrom(t *testing.T) {
+	str := StringPtrFrom("test")
+	assertStrNotNil(t, str, "StringPtrFrom() string")
+	assertStr(t, *str, "StringPtrFrom() string")
+
+	zero := StringPtrFrom("")
+	assertStrNotNil(t, zero, "StringPtrFrom() string")
+	if !zero.Valid {
+		t.Error("StringPtrFrom(0)", "is invalid, but should be valid")
+	}
+}
+
+func TestStringPtrFromPtr(t *testing.T) {
+	s := "test"
+	sptr := &s
+	str := StringPtrFromPtr(sptr)
+	assertStrNotNil(t, str, "StringFromPtr() string")
+	assertStr(t, *str, "StringFromPtr() string")
+
+	null := StringPtrFromPtr(nil)
+	assertStrNotNil(t, null, "StringFromPtr(nil)")
+	assertNullStr(t, *null, "StringFromPtr(nil)")
+}
+
 func TestUnmarshalString(t *testing.T) {
 	var str String
 	err := json.Unmarshal(stringJSON, &str)
@@ -222,6 +246,12 @@ func TestStringEqual(t *testing.T) {
 func maybePanic(err error) {
 	if err != nil {
 		panic(err)
+	}
+}
+
+func assertStrNotNil(t *testing.T, s *String, from string) {
+	if s == nil {
+		t.Errorf("bad %s string: %v ≠ %v\n", from, nil, "non-nil")
 	}
 }
 

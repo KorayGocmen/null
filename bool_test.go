@@ -32,6 +32,30 @@ func TestBoolFromPtr(t *testing.T) {
 	assertNullBool(t, null, "BoolFromPtr(nil)")
 }
 
+func TestBoolPtrFrom(t *testing.T) {
+	b := BoolPtrFrom(true)
+	assertBoolNotNil(t, b, "BoolPtrFrom(true)")
+	assertBool(t, *b, "BoolPtrFrom(true)")
+
+	zero := BoolPtrFrom(false)
+	assertBoolNotNil(t, b, "BoolPtrFrom(false)")
+	if !zero.Valid {
+		t.Error("BoolPtrFrom(false)", "is invalid, but should be valid")
+	}
+}
+
+func TestBoolPtrFromPtr(t *testing.T) {
+	n := true
+	bptr := &n
+	b := BoolPtrFromPtr(bptr)
+	assertBoolNotNil(t, b, "BoolPtrFromPtr()")
+	assertBool(t, *b, "BoolPtrFromPtr()")
+
+	null := BoolPtrFromPtr(nil)
+	assertBoolNotNil(t, b, "BoolPtrFromPtr()")
+	assertNullBool(t, *null, "BoolPtrFromPtr(nil)")
+}
+
 func TestUnmarshalBool(t *testing.T) {
 	var b Bool
 	err := json.Unmarshal(boolJSON, &b)
@@ -215,6 +239,12 @@ func TestBoolEqual(t *testing.T) {
 	b1 = NewBool(true, true)
 	b2 = NewBool(false, true)
 	assertBoolEqualIsFalse(t, b1, b2)
+}
+
+func assertBoolNotNil(t *testing.T, b *Bool, from string) {
+	if b == nil {
+		t.Errorf("bad %s bool: %v ≠ %v\n", from, nil, "non-nil")
+	}
 }
 
 func assertBool(t *testing.T, b Bool, from string) {

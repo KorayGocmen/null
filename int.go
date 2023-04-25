@@ -26,6 +26,11 @@ func NewInt(i int64, valid bool) Int {
 	}
 }
 
+// IntPtr returns the pointer to a Int.
+func IntPtr(i Int) *Int {
+	return &i
+}
+
 // IntFrom creates a new Int that will always be valid.
 func IntFrom(i int64) Int {
 	return NewInt(i, true)
@@ -37,6 +42,16 @@ func IntFromPtr(i *int64) Int {
 		return NewInt(0, false)
 	}
 	return NewInt(*i, true)
+}
+
+// IntFrom creates a new Int ptr that will always be valid.
+func IntPtrFrom(i int64) *Int {
+	return IntPtr(IntFrom(i))
+}
+
+// IntFromPtr creates a new Int ptr that be null if i is nil.
+func IntPtrFromPtr(i *int64) *Int {
+	return IntPtr(IntFromPtr(i))
 }
 
 // ValueOrZero returns the inner value if valid, otherwise zero.

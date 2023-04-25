@@ -25,6 +25,11 @@ func NewBool(b bool, valid bool) Bool {
 	}
 }
 
+// BoolPtr returns the pointer to a Bool.
+func BoolPtr(b Bool) *Bool {
+	return &b
+}
+
 // BoolFrom creates a new Bool that will always be valid.
 func BoolFrom(b bool) Bool {
 	return NewBool(b, true)
@@ -36,6 +41,16 @@ func BoolFromPtr(b *bool) Bool {
 		return NewBool(false, false)
 	}
 	return NewBool(*b, true)
+}
+
+// BoolPtrFrom creates a new Bool ptr that will always be valid.
+func BoolPtrFrom(b bool) *Bool {
+	return BoolPtr(NewBool(b, true))
+}
+
+// BoolPtrFromPtr creates a new Bool ptr that will be null if f is nil.
+func BoolPtrFromPtr(b *bool) *Bool {
+	return BoolPtr(BoolFromPtr(b))
 }
 
 // ValueOrZero returns the inner value if valid, otherwise false.
